@@ -1,0 +1,13 @@
+server {
+    listen ${PORT};
+
+    error_log stderr;
+    access_log /dev/stdout;
+
+    location / {
+        proxy_pass ${UPSTREAM_SERVER};
+    }
+    if ($http_x_forwarded_proto != "https") {
+			rewrite ^(.*)$ https://$host$1 permanent;
+		}
+}
